@@ -1,0 +1,1 @@
+export { SignUp as SignUpPage } from "../auth/components";
