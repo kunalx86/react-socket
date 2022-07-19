@@ -1,6 +1,7 @@
 import { Navigate } from 'react-router-dom';
 import './App.css'
 import { useAuth } from './auth'
+import { OnlineUsers } from './socket-io/components';
 
 function App() {
   const { isLoggedIn, logout, user } = useAuth();
@@ -13,6 +14,9 @@ function App() {
     <div className="App">
       <div>
         I am {user.email}
+      </div>
+      <div>
+        <OnlineUsers />
       </div>
       <div>
         <button onClick={() => logout()}>Logout</button>

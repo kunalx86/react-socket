@@ -1,6 +1,6 @@
 
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, indexedDBLocalPersistence, setPersistence, onAuthStateChanged } from "firebase/auth";
-import { useCallback, useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer } from "react";
 import { auth } from "../firebase";
 import { LOGIN, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGIN_SERVER_ERROR, LOGOUT, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING } from "./actionTypes";
 import AuthContext from "./context";
@@ -27,7 +27,7 @@ export function AuthProvider({ children }) {
     const authStateChangeAndSetPersistence = async () => {
       await setPersistence(auth, indexedDBLocalPersistence);
       unsubscribe = onAuthStateChanged(auth, async user_ => {
-        console.log(user_);
+        // console.log(user_);
         if (!user_) {
           dispatch({ type: LOGOUT });
           return;
@@ -40,7 +40,7 @@ export function AuthProvider({ children }) {
             type: LOGIN,
             payload: user_
           })
-          console.log(token)
+          // console.log(token)
         } catch (e) {
           dispatch({
             type: LOGIN_SERVER_ERROR,
