@@ -1,0 +1,4 @@
+- Photo save to Firebase Storage
+- Suggest username
+- Send to server
+- Forgot password

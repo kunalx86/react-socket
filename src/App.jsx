@@ -16,7 +16,7 @@ function App() {
         I am {user.email}
       </div>
       <div>
-        <OnlineUsers />
+        {/* <OnlineUsers /> */}
       </div>
       <div>
         <button onClick={() => logout()}>Logout</button>
