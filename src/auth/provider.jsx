@@ -92,13 +92,14 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const signUp = useCallback(async ({ email, password }) => {
+  const signUp = useCallback(async ({ email, password, url }) => {
     dispatch({
       type: SIGNUP_LOADING
     });
     try {
       const user_ = await createUserWithEmailAndPassword(auth, email, password)
       const token = await user_.user.getIdToken();
+      localStorage.setItem("session", token);
 
       // Send other credentials to our server to save the data
       await axiosClient.post("/client/register", {
@@ -106,11 +107,7 @@ export function AuthProvider({ children }) {
         password,
         phone: "+919145623417",
         name: "Literally me",
-        photo: "https://upload.wikimedia.org/wikipedia/en/9/9a/Trollface_non-free.png"
-      }, {
-        headers: {
-          "authorization": token
-        }
+        photo: url
       });
     } catch (err) {
       if (err instanceof FirebaseError) {
