@@ -19,7 +19,8 @@ const defaultValue = {
   error: "",
   login: async () => {},
   signUp: async () => {},
-  logout: () => {}
+  logout: async () => {},
+  forgotPassword: async () => {}
 };
 
 const AuthContext = createContext(defaultValue);

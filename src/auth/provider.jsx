@@ -1,9 +1,9 @@
 import { axiosClient } from "../axios";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
 import { useCallback, useEffect, useReducer } from "react";
 import { auth } from "../firebase";
-import { LOGIN, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGIN_SERVER_ERROR, LOGOUT, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING, SIGNUP_SERVER_ERROR } from "./actionTypes";
+import { FORGOT_PASSWORD, FORGOT_PASSWORD_ERROR, FORGOT_PASSWORD_LOADING, LOGIN, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGIN_SERVER_ERROR, LOGOUT, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING, SIGNUP_SERVER_ERROR } from "./actionTypes";
 import AuthContext from "./context";
 import authReducer from "./reducer";
 
@@ -92,7 +92,7 @@ export function AuthProvider({ children }) {
     }
   }, []);
 
-  const signUp = useCallback(async ({ email, password, url }) => {
+  const signUp = useCallback(async ({ email, password, url, name }) => {
     dispatch({
       type: SIGNUP_LOADING
     });
@@ -106,7 +106,7 @@ export function AuthProvider({ children }) {
         email,
         password,
         phone: "+919145623417",
-        name: "Literally me",
+        name,
         photo: url
       });
     } catch (err) {
@@ -132,6 +132,23 @@ export function AuthProvider({ children }) {
     });
   }, []);
 
+  const forgotPassword = useCallback(async (email) => {
+    dispatch({
+      type: FORGOT_PASSWORD_LOADING
+    });
+    try {
+      await sendPasswordResetEmail(auth, email)
+    } catch (e) {
+      dispatch({
+        type: FORGOT_PASSWORD_ERROR,
+        payload: e?.message
+      })
+    }
+    dispatch({
+      type: FORGOT_PASSWORD
+    });
+  }, []);
+
   return (
     <AuthContext.Provider value={{
       user,
@@ -141,7 +158,8 @@ export function AuthProvider({ children }) {
       error,
       login,
       logout,
-      signUp
+      signUp,
+      forgotPassword
     }}>
       {isLoading ? <div>Auth State loading...</div> : children}
     </AuthContext.Provider>

@@ -16,7 +16,7 @@ export default function SignUp() {
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
     if (url !== "") {
-      await signUp({ email, password, url });
+      await signUp({ email, password, url, name });
       navigate("/");
     }
   }, [email, password, url]);

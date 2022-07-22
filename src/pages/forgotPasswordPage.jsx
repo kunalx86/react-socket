@@ -1,0 +1,1 @@
+export { ForgotPassword as ForgotPasswordPage } from "../auth/components"

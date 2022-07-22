@@ -1,4 +1,4 @@
-import { LOGIN, LOGIN_SERVER_ERROR, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGOUT, SIGNUP, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING, SIGNUP_SERVER_ERROR } from "./actionTypes";
+import { LOGIN, LOGIN_SERVER_ERROR, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGOUT, SIGNUP, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING, SIGNUP_SERVER_ERROR, FORGOT_PASSWORD, FORGOT_PASSWORD_LOADING, FORGOT_PASSWORD_ERROR } from "./actionTypes";
 
 function authReducer(state, action) {
   switch(action.type) {
@@ -62,6 +62,28 @@ function authReducer(state, action) {
         isLoggedIn: false,
         error: "",
         firebaseError: ""
+      }
+    case FORGOT_PASSWORD:
+      return {
+        ...state,
+        user: null,
+        isLoading: false,
+        isLoggedIn: false,
+        error: "",
+        firebaseError: ""
+      }
+    case FORGOT_PASSWORD_LOADING:
+      return {
+        ...state,
+        isLoading: true,
+        user: null,
+        isLoggedIn: false
+      }
+    case FORGOT_PASSWORD_ERROR:
+      return {
+        ...state,
+        isLoading: false,
+        firebaseError: action.payload || "Something went wrong with Firebase"
       }
     default:
       throw new Error(`${action.type} not recognized`);

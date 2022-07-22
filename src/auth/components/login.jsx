@@ -43,6 +43,11 @@ export default function Login() {
               password
             }
           })}>Not registered? Sign up instead</button>
+          <button onClick={() => navigate("/forgot-password", {
+            state: {
+              email,
+            }
+          })}>Forgor Password 💀</button>
         </div>
       </form>
     </div>
