@@ -15,10 +15,10 @@ export default function SignUp() {
 
   const onSubmit = useCallback(async (e) => {
     e.preventDefault();
-    if (url !== "") {
+    // if (url !== "") {
       await signUp({ email, password, url, name });
       navigate("/");
-    }
+    // }
   }, [email, password, url]);
 
   const suggestUsername = useCallback((e) => {

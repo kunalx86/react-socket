@@ -1,7 +1,7 @@
 import axios_ from "axios";
 
 export const axiosClient = axios_.create({
-  baseURL: "http://localhost:3001/pikmi-client",
+  baseURL: "http://localhost:3000/api/v1",
   validateStatus: (status) => status < 300,
 })
 

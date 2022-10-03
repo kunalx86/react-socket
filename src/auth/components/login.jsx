@@ -50,6 +50,34 @@ export default function Login() {
           })}>Forgor Password 💀</button>
         </div>
       </form>
+      <PhoneLogin />
     </div>
+  )
+}
+
+function PhoneLogin() {
+  const [phone, setPhone] = useState('')
+  const [otp, setOtp] = useState('')
+  const {} = useAuth()
+  const onSubmit = (e) => {
+    e.preventDefault();
+  }
+  return (
+    <form onSubmit={onSubmit}>
+      <div>
+        <span>Phone Number</span>
+        <input type="text" value={phone} onChange={e => setPhone(e.target.value)}/>
+        <button onClick={e => {
+
+        }}>Submit Phone</button>
+      </div>
+      <div>
+        <span>OTP</span>
+        <input type="text" value={otp} onChange={e => setOtp(e.target.value)}/>
+      </div>
+      <div>
+        <button type="submit">Submit</button>
+      </div>
+    </form>
   )
 }

@@ -1,6 +1,6 @@
 import { axiosClient } from "../axios";
 import { FirebaseError } from "firebase/app";
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, sendPasswordResetEmail, signInWithPhoneNumber } from "firebase/auth";
 import { useCallback, useEffect, useReducer } from "react";
 import { auth } from "../firebase";
 import { FORGOT_PASSWORD, FORGOT_PASSWORD_ERROR, FORGOT_PASSWORD_LOADING, LOGIN, LOGIN_FIREBASE_ERROR, LOGIN_LOADING, LOGIN_SERVER_ERROR, LOGOUT, SIGNUP_FIREBASE_ERROR, SIGNUP_LOADING, SIGNUP_SERVER_ERROR } from "./actionTypes";
@@ -48,6 +48,9 @@ export function AuthProvider({ children }) {
 
       try {
         // Make a request to server to get data from the server
+        if (user_.phoneNumber === null) {
+          
+        }
         const token = await user_.getIdToken();
         localStorage.setItem("session", token);
         const { data: { data } } = await axiosClient.post("/client/login", {});
@@ -83,7 +86,8 @@ export function AuthProvider({ children }) {
       type: LOGIN_LOADING
     });
     try {
-      await signInWithEmailAndPassword(auth, email, password); 
+      const u = await signInWithEmailAndPassword(auth, email, password); 
+      console.log(await u.user.getIdToken())
     } catch (e) {
       dispatch({
         type: LOGIN_FIREBASE_ERROR,
@@ -131,6 +135,26 @@ export function AuthProvider({ children }) {
       type: LOGOUT
     });
   }, []);
+
+  const sendOTP = useCallback(async (phone) => {
+    const confirmationResult = await signInWithPhoneNumber(auth, phone)
+    window.confirmationResult = confirmationResult;
+  })
+
+  const confirmOTP = useCallback(async (otp) => {
+    dispatch({
+      type: LOGIN_LOADING
+    });
+    try {
+      const user = await window.confirmationResult.confirm(otp)
+      console.log(await u.user.getIdToken())
+    } catch (e) {
+      dispatch({
+        type: LOGIN_FIREBASE_ERROR,
+        payload: e?.message
+      })
+    }
+  })
 
   const forgotPassword = useCallback(async (email) => {
     dispatch({

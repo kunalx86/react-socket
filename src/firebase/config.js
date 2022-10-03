@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { initializeAuth } from "firebase/auth";
+import { initializeAuth, RecaptchaVerifier } from "firebase/auth";
 import { getStorage } from "firebase/storage";
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -23,5 +23,13 @@ const app = initializeApp(firebaseConfig);
 
 export const auth = initializeAuth(app);
 export const storage = getStorage(app);
+
+window.recaptchaVerifier = new RecaptchaVerifier('captcha', {
+  'size': 'invisible',
+  'callback': (_) => {
+    // reCAPTCHA solved, allow signInWithPhoneNumber.
+  }
+}, auth);
+
 
 export default app;
